@@ -3,52 +3,35 @@
  * на сервер.
  * */
 const createRequest = (options = {}) => {
-    //    const dataList = [];
-    //
-    //    if (options.data) {
-    //        for (const prop in options.data) {
-    //            if (options.data.hasOwnProperty(prop)) {
-    //                const element = `${prop}=${options.data[prop]}`;
-    //                dataList.push(element);
-    //            }
-    //        }
-    //    }
-
     const method = options.method;
     let url = options.url;
     const xhr = new XMLHttpRequest();
 
-    xhr.responseType = json;
-
-    if (method == "GET") {
-        const urlParams = dataList.join('&');
+    xhr.responseType = "json";
+    const formData = new FormData();
+    if (method === "GET") {
+        const urlParams = Object.entries(option.data).map(([key, value]) => `${key} = ${value}`).join('&');
         url = `${url}?${urlParams}`;
-        xhr.open(method, url);
-        xhr.send();
     } else {
-        const formData = new FormData();
         for (let prop in options.data) {
             if (options.data.hasOwnProperty(prop)) {
                 formData.append(prop, options.data[prop]);
             }
         }
-
-        xhr.open(method, url);
-        xhr.send(formData);
     }
 
+    xhr.open(method, url);
+
+    xhr.send(formData);
+
     xhr.onload = () => {
-        if (xhr.status != 200) {
-            const err = `Ошибка ${xhr.status}: ${xhr.statusText}`;
-            options.callback(err);
-        } else {
-            const response = xhr.response;
-            options.callback(null, response);
-        }
+        const response = xhr.response;
+
+        options.callback(null, response);
     }
 
     xhr.onerror = () => {
-        const err = xhr.onerror;
+        const err = new Error("Bad request");
         options.callback(err);
     }
 };
