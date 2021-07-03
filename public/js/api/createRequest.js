@@ -3,31 +3,22 @@
  * на сервер.
  * */
 const createRequest = (options = {}) => {
-    const dataList = [];
-
-    if (options.data) {
-        for (const prop in options.data) {
-            if (options.data.hasOwnProperty(prop)) {
-                const element = `${prop}=${options.data[prop]}`;
-                dataList.push(element);
-            }
-        }
-    }
+    //    const dataList = [];
+    //
+    //    if (options.data) {
+    //        for (const prop in options.data) {
+    //            if (options.data.hasOwnProperty(prop)) {
+    //                const element = `${prop}=${options.data[prop]}`;
+    //                dataList.push(element);
+    //            }
+    //        }
+    //    }
 
     const method = options.method;
-
     let url = options.url;
-
     const xhr = new XMLHttpRequest();
-    const headers = options.headers;
-    for (let header in headers) {
-        if (headers.hasOwnProperty(header)) {
-            xhr.setRequestHeader(header, headers[header]);
-        }
-    }
 
-    xhr.responseType = options.responseType;
-    xhr.withCredentials = true;
+    xhr.responseType = json;
 
     if (method == "GET") {
         const urlParams = dataList.join('&');
@@ -57,9 +48,7 @@ const createRequest = (options = {}) => {
     }
 
     xhr.onerror = () => {
-        const err = 'Ошибка запроса';
+        const err = xhr.onerror;
         options.callback(err);
     }
-
-    return xhr;
 };
