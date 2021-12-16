@@ -21,12 +21,10 @@ const createRequest = (options = {}) => {
     }
 
     xhr.open(method, url);
-
     xhr.send(formData);
 
     xhr.onload = () => {
         const response = xhr.response;
-
         options.callback(null, response);
     }
 
